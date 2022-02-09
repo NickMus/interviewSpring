@@ -1,0 +1,18 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Delete Student</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+<p><b>Delete student</b></p>
+<form action="/delete_student" method="post" >
+    Enter ID: <input type=number name="id">
+    <br>
+    <button type="submit" value="Submit">DELETE</button>
+</form>
+<br>
+<a th:href="'/'">К списку</a>
+
+</body>
+</html>
