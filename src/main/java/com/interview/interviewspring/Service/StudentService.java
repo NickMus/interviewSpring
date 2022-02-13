@@ -1,52 +1,38 @@
 package com.interview.interviewspring.Service;
 
 import com.interview.interviewspring.Entity.Student;
-import com.interview.interviewspring.Repository.StudentRepo;
+import com.interview.interviewspring.Repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class StudentService {
 
 
-    private StudentRepo studentRepo;
+    private StudentRepository studentRepo;
 
     @Autowired
-    public void setStudentRepo(StudentRepo studentRepo) {
+    public void setStudentRepo(StudentRepository studentRepo) {
         this.studentRepo = studentRepo;
     }
 
-    public void persist(Student student) {
-        studentRepo.openCurrentSessionWithTransaction();
-        studentRepo.persist(student);
-        studentRepo.closeCurrentSessionWithTransaction();
+    public Student persist(Student student) {
+        return studentRepo.save(student);
     }
 
-    public void delete(int id) {
-        studentRepo.openCurrentSessionWithTransaction();
-        studentRepo.delete(id);
-        studentRepo.closeCurrentSessionWithTransaction();
+    public void delete(Student student) {
+       studentRepo.delete(student);
     }
 
     public List<Student> findAll() {
-        studentRepo.openCurrentSession();
-        List<Student> studentList = studentRepo.findAll();
-        studentRepo.closeCurrentSession();
-        return studentList;
+        return studentRepo.findAll();
     }
 
-    public Student findById(int id) {
-        studentRepo.openCurrentSession();
-        Student student = studentRepo.findById(id);
-        studentRepo.closeCurrentSession();
-        return student;
+    public Optional<Student> findById(int id) {
+        return studentRepo.findById(id);
     }
 
-    public void update(Student student) {
-        studentRepo.openCurrentSessionWithTransaction();
-        studentRepo.update(student);
-        studentRepo.closeCurrentSessionWithTransaction();
-    }
 }

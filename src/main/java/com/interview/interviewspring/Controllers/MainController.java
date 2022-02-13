@@ -3,15 +3,17 @@ package com.interview.interviewspring.Controllers;
 import com.interview.interviewspring.Entity.Student;
 import com.interview.interviewspring.Service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
-@Controller
+import javax.websocket.server.PathParam;
+import java.util.List;
+import java.util.Optional;
+
+@RestController
+@RequestMapping("/user")
+
 public class MainController {
-
 
     private StudentService studentService;
 
@@ -22,36 +24,27 @@ public class MainController {
     }
 
 
-    @GetMapping("/")
-    public String index(Model model) {
-        model.addAttribute("studentList", studentService.findAll());
-        return "index";
-    }
-
-    @GetMapping("/add_student")
-    public String showForm(Model model) {
-        Student student = new Student();
-        model.addAttribute("student", student);
-        return "form";
+    @GetMapping("/all")
+    public List<Student> findAll() {
+        return studentService.findAll();
     }
 
     @PostMapping("/add_student")
-    public String addStudent(@RequestParam String name, @RequestParam int age) {
-        Student student = new Student(name, age);
-        studentService.persist(student);
-        return "redirect:/";
+    public Student addStudent(@RequestBody Student student) {
+       return studentService.persist(student);
     }
 
-    @GetMapping("/delete_student")
-    public String deleteForm() {
-        return "delete_form";
+    @GetMapping("/{id}")
+    public Optional<Student> findById(@PathVariable("id") int id) {
+       return studentService.findById(id);
     }
 
-    @PostMapping("/delete_student")
-    public String deleteStudent(@RequestParam int id) {
-        studentService.delete(id);
-        return "redirect:/";
-    }
+
+//    @DeleteMapping("/delete_student")
+//    public void deleteStudent(@RequestParam int id) {
+//        studentService.delete(id);
+//
+//    }
 
     @GetMapping("/update_student")
     public String updateForm(Model model) {
@@ -60,16 +53,16 @@ public class MainController {
         return "update_form";
     }
 
-    @PostMapping("/update_student")
-    public String updateStudent(@RequestParam int id, @RequestParam String name, @RequestParam int age) {
-        Student student = studentService.findById(id);
-        student.setId(id);
-        student.setName(name);
-        student.setAge(age);
-        studentService.update(student);
-
-        return "redirect:/";
-    }
+//    @PostMapping("/update_student")
+//    public String updateStudent(@RequestParam int id, @RequestParam String name, @RequestParam int age) {
+//        Student student = studentService.findById(id);
+//        student.setId(id);
+//        student.setName(name);
+//        student.setAge(age);
+//        studentService.update(student);
+//
+//        return "redirect:/";
+//    }
 
 
 
